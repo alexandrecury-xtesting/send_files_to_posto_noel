@@ -1,6 +1,7 @@
 
 import pathlib
 import requests
+from template_rpa import settings
 from ftp_service import send_file_to_remote_server
 from xlsx_to_csv import convert
 
@@ -15,19 +16,25 @@ def bootstrap():
 
 def get_result_file(robot_id: int = 1, filename: str = ''):
     url = f"{API_URL}/robots/{robot_id}/resources/{filename}"
-    response = requests.get(url, stream=True, timeout=60)
-    if response.ok:
-        filepath: pathlib.Path = pathlib.Path(FILES_DIR) / filename
-        with open(filepath, "wb") as file:
-            file.write(response.content)
-        return filepath
-    else:
-        raise Exception('Failed to access orchestrator. ResponseError: %s', response.text)
+    try:
+        response = requests.get(url, stream=True, timeout=60)
+        response.raise_for_status()
+        if response.ok:
+            filepath: pathlib.Path = pathlib.Path(FILES_DIR) / filename
+            with open(filepath, "wb") as file:
+                file.write(response.content)
+            return filepath
+    except requests.exceptions.HTTPError as e:
+        # Handle HTTP errors (4xx and 5xx status codes)
+        if e.response.status_code == 404:
+            raise FileNotFoundError(f'Resouce not found: {url}')
+        else:
+            raise Exception(f'Failed to access orchestrator. HTTPError: {e}')
 
 
 if __name__ == "__main__":
     bootstrap()
-    xlsx_filepath: pathlib.Path = get_result_file(filename='planilha_notebooks.xlsx')
+    xlsx_filepath: pathlib.Path = get_result_file(filename=settings.variables['Formulário.xlsx'])
     csv_filepath: pathlib.Path = pathlib.Path(FILES_DIR) / 'file.csv'
     convert(xlsx_filepath=xlsx_filepath.resolve(), csv_filepath=csv_filepath.resolve())
     if xlsx_filepath.exists():
@@ -36,7 +43,7 @@ if __name__ == "__main__":
             filename='file.csv',
             path='/domains/innovatex.com.br/public_html/noel/files/csv/',
         )
-    log_filepath: pathlib.Path = get_result_file(filename='log.html')
+    log_filepath: pathlib.Path = get_result_file(filename=settings.variables['log'])
     if log_filepath.exists():
         send_file_to_remote_server(
             filepath=log_filepath.resolve(),
