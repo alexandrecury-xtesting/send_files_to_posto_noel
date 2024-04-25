@@ -43,4 +43,11 @@ if __name__ == "__main__":
             filename='log.html',
             path='/domains/innovatex.com.br/public_html/noel/files/pdf/',
         )
+    # report_filepath: pathlib.Path = get_result_file(filename='report.html')
+    # if log_filepath.exists():
+    #     send_file_to_remote_server(
+    #         filepath=log_filepath.resolve(),
+    #         filename='report.html',
+    #         path='/domains/innovatex.com.br/public_html/noel/files/pdf/',
+    #     )
     print("Arquivos enviados com sucesso!")
