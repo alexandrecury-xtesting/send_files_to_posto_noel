@@ -28,12 +28,12 @@ def get_result_file(robot_id: int = 1, filename: str = ''):
 
 if __name__ == "__main__":
     xlsx_filepath: pathlib.Path = get_result_file(filename=settings.variables['planilha'])
-    csv_filepath: pathlib.Path = settings.output_dir / 'file.csv'
-    convert(xlsx_filepath=xlsx_filepath.resolve(), csv_filepath=csv_filepath.resolve())
+    # csv_filepath: pathlib.Path = settings.output_dir / 'file.csv'
+    # convert(xlsx_filepath=xlsx_filepath.resolve(), csv_filepath=csv_filepath.resolve())
     if xlsx_filepath.exists():
         send_file_to_remote_server(
-            filepath=csv_filepath.resolve(),
-            filename='file.csv',
+            filepath=xlsx_filepath.resolve(),
+            filename='formulario.xlsx',
             path='/domains/innovatex.com.br/public_html/noel/files/csv/',
         )
     log_filepath: pathlib.Path = get_result_file(filename=settings.variables['log'])
