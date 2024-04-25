@@ -32,10 +32,10 @@ def get_args():
 
 class BaseConfig:
     args = get_args()
-    conda_dir: pathlib.Path = os.getcwd()
+    conda_dir: pathlib.Path = pathlib.Path(os.getcwd())
     if args.conda_dir is not None:
         conda_dir = pathlib.Path(args.conda_dir)
-    output_dir: pathlib.Path | None = None
+    output_dir: pathlib.Path = conda_dir / 'results'
     if args.output_dir is not None:
         output_dir = pathlib.Path(args.output_dir)
     filepath: pathlib.Path | None = None
@@ -49,3 +49,6 @@ def get_settings():
     return BaseConfig()
 
 settings: BaseConfig = get_settings()
+
+if not settings.output_dir.is_dir():
+    settings.output_dir.mkdir()
