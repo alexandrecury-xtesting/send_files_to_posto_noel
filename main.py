@@ -34,7 +34,7 @@ def get_result_file(robot_id: int = 1, filename: str = ''):
 
 if __name__ == "__main__":
     bootstrap()
-    xlsx_filepath: pathlib.Path = get_result_file(filename=settings.variables['Formulário.xlsx'])
+    xlsx_filepath: pathlib.Path = get_result_file(filename=settings.variables['planilha'])
     csv_filepath: pathlib.Path = pathlib.Path(FILES_DIR) / 'file.csv'
     convert(xlsx_filepath=xlsx_filepath.resolve(), csv_filepath=csv_filepath.resolve())
     if xlsx_filepath.exists():

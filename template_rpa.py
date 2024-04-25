@@ -31,11 +31,8 @@ def get_args():
 
 
 class BaseConfig:
-    config_file = "YamlVariables.yml"
-    variables = load_config(config_file)
-
     args = get_args()
-    conda_dir: pathlib.Path | None = None
+    conda_dir: pathlib.Path = os.getcwd()
     if args.conda_dir is not None:
         conda_dir = pathlib.Path(args.conda_dir)
     output_dir: pathlib.Path | None = None
@@ -45,7 +42,8 @@ class BaseConfig:
     if args.filepath is not None:
         filepath = pathlib.Path(args.filepath)
 
-
+    config_file: pathlib.Path = pathlib.Path(conda_dir) / "YamlVariables.yml"
+    variables = load_config(config_file)
 @lru_cache
 def get_settings():
     return BaseConfig()
