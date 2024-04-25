@@ -15,7 +15,7 @@ def get_args():
 
 
     parser = ArgumentParser(description='Program RPA template')
-    parser.add_argument("--conda_dir", dest="conda_dir",
+    parser.add_argument("--robot_dir", dest="robot_dir",
                     help="write conda directory")
 
     parser.add_argument("-d", "--output_dir", dest="output_dir",
@@ -32,17 +32,17 @@ def get_args():
 
 class BaseConfig:
     args = get_args()
-    conda_dir: pathlib.Path = pathlib.Path(os.getcwd())
-    if args.conda_dir is not None:
-        conda_dir = pathlib.Path(args.conda_dir)
-    output_dir: pathlib.Path = conda_dir / 'results'
+    robot_dir: pathlib.Path = pathlib.Path(os.getcwd())
+    if args.robot_dir is not None:
+        robot_dir = pathlib.Path(args.robot_dir)
+    output_dir: pathlib.Path = robot_dir / 'results'
     if args.output_dir is not None:
         output_dir = pathlib.Path(args.output_dir)
     filepath: pathlib.Path | None = None
     if args.filepath is not None:
         filepath = pathlib.Path(args.filepath)
 
-    config_file: pathlib.Path = pathlib.Path(conda_dir) / "YamlVariables.yml"
+    config_file: pathlib.Path = pathlib.Path(robot_dir) / "YamlVariables.yml"
     variables = load_config(config_file)
 @lru_cache
 def get_settings():
