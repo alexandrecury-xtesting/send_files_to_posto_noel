@@ -42,7 +42,7 @@ class BaseConfig:
     if args.filepath is not None:
         filepath = pathlib.Path(args.filepath)
 
-    config_file: pathlib.Path = pathlib.Path(robot_dir) / "YamlVariables.yml"
+    config_file: pathlib.Path = pathlib.Path(robot_dir) / "YamlVariables.yaml"
     variables = load_config(config_file)
 @lru_cache
 def get_settings():
