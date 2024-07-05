@@ -5,7 +5,7 @@ from template_rpa import settings
 from ftp_service import send_file_to_remote_server
 from xlsx_to_csv import convert
 
-API_URL = 'http://zabbix.xtesting.com.br/orquestrador'
+API_URL = 'http://orquestrador.xtesting.com.br'
 
 
 def get_result_file(robot_id: int = 1, filename: str = ''):
